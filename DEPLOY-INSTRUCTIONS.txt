@@ -1,0 +1,8 @@
+Tonasco GitHub Pages deployment patch
+
+Files:
+- .github/workflows/deploy-pages.yml
+- src/app/app.config.ts
+
+Upload these paths into the repository, replacing src/app/app.config.ts.
+Then in GitHub Settings > Pages, set Source to GitHub Actions.
