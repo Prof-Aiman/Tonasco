@@ -1,0 +1,82 @@
+<div class="page-shell">
+  <header class="topbar">
+    <div class="brand-lockup">
+      <div class="brand-word">tonasco<span class="brand-mark"></span></div>
+      <div class="brand-divider"></div>
+      <span class="brand-section">Jig Management</span>
+    </div>
+
+    <button class="primary-btn top-action" type="button" (click)="addInventory()">
+      <span class="plus">+</span>
+      <span>Add Inventory</span>
+    </button>
+  </header>
+
+  <main class="hero">
+    <section class="hero-heading" aria-labelledby="page-title">
+      <div class="hero-brand">tonasco<span class="hero-mark"></span></div>
+      <div class="title-row">
+        <span></span>
+        <h1 id="page-title">Jig Management</h1>
+        <span></span>
+      </div>
+      <div class="status-chip">
+        <span class="status-dot">✓</span>
+        <span>Smart System</span>
+      </div>
+    </section>
+
+    <section class="search-card">
+      <div class="card-heading">
+        <div class="icon-circle" aria-hidden="true">◇</div>
+        <div>
+          <h2>Find Jig by Part Number</h2>
+          <p>Search or scan a part number to view jig details and inventory.</p>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <form (ngSubmit)="search()" novalidate>
+        <label for="part-number">Part Number <span>*</span></label>
+        <div class="input-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input
+            id="part-number"
+            name="partNumber"
+            [(ngModel)]="partNumber"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            placeholder="Enter part number"
+            aria-describedby="part-help"
+          >
+          <span class="scan-icon" aria-hidden="true">▦</span>
+        </div>
+
+        <div class="input-meta" id="part-help">
+          <span>Type or scan the part number (e.g., 12345-ABC)</span>
+          <span>ⓘ Include dashes or suffixes</span>
+        </div>
+
+        <button class="primary-btn enter-btn" type="submit">
+          <span>Enter</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </form>
+
+      <div class="tip-box">
+        <div class="tip-icon">💡</div>
+        <div><strong>Tip:</strong> You can also scan a barcode from a jig tag to quickly look up inventory.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 Tonasco. All rights reserved.</span>
+    <span class="footer-sep">|</span>
+    <span>v1.0.0</span>
+    <span class="footer-sep">|</span>
+    <span>Internal Jig Management</span>
+  </footer>
+</div>

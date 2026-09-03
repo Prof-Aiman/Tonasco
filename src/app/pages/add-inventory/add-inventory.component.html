@@ -1,0 +1,36 @@
+<div class="page">
+  <header>
+    <a routerLink="/" class="back">← Back</a>
+    <div>
+      <div class="brand">tonasco</div>
+      <span>Jig Management</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="heading">
+        <div>
+          <p class="eyebrow">INVENTORY</p>
+          <h1>Add New Jig</h1>
+          <p>Register a new jig or fixture in the management system.</p>
+        </div>
+      </div>
+
+      <form (ngSubmit)="save()">
+        <div class="grid">
+          <label>Part Number<input name="partNumber" [(ngModel)]="form.partNumber" required placeholder="e.g. 12345-ABC"></label>
+          <label>Jig Number<input name="jigNumber" [(ngModel)]="form.jigNumber" placeholder="e.g. JIG-001"></label>
+          <label>Jig Name<input name="jigName" [(ngModel)]="form.jigName" placeholder="e.g. Drilling Jig"></label>
+          <label>Rack Location<input name="location" [(ngModel)]="form.location" placeholder="e.g. Rack A-12"></label>
+          <label>Quantity<input name="quantity" [(ngModel)]="form.quantity" min="0" type="number"></label>
+          <label>Status<select name="status" [(ngModel)]="form.status"><option>Available</option><option>In Use</option><option>Maintenance</option><option>Retired</option></select></label>
+        </div>
+        <div class="actions">
+          <a routerLink="/" class="secondary">Cancel</a>
+          <button type="submit">Save Inventory</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
