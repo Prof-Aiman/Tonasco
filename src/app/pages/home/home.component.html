@@ -31,7 +31,7 @@
         <div class="icon-circle" aria-hidden="true">◇</div>
         <div>
           <h2>Find Jig by Part Number</h2>
-          <p>Search or scan a part number to view jig details and inventory.</p>
+          <p>Search a part number to view all matching jig records.</p>
         </div>
       </div>
 
@@ -46,28 +46,77 @@
             name="partNumber"
             [(ngModel)]="partNumber"
             type="text"
-            inputmode="text"
             autocomplete="off"
-            placeholder="Enter part number"
-            aria-describedby="part-help"
+            placeholder="e.g. T0017986"
           >
           <span class="scan-icon" aria-hidden="true">▦</span>
         </div>
 
-        <div class="input-meta" id="part-help">
-          <span>Type or scan the part number (e.g., 12345-ABC)</span>
-          <span>ⓘ Include dashes or suffixes</span>
+        <div class="input-meta">
+          <span>Enter the exact Part Number from the jig register.</span>
+          <span>ⓘ One Part Number can have multiple Register IDs</span>
         </div>
 
-        <button class="primary-btn enter-btn" type="submit">
-          <span>Enter</span>
+        <button class="primary-btn enter-btn" type="submit" [disabled]="loading()">
+          <span>{{ loading() ? 'Searching...' : 'Enter' }}</span>
           <span aria-hidden="true">→</span>
         </button>
       </form>
 
+      @if (error()) {
+        <div class="tip-box">
+          <div><strong>Error:</strong> {{ error() }}</div>
+        </div>
+      }
+
+      @if (!loading() && submittedPart() && jigs().length === 0 && !error()) {
+        <div class="tip-box">
+          <div>No jig found for <strong>{{ submittedPart() }}</strong>.</div>
+        </div>
+      }
+
+      @if (jigs().length > 0) {
+        <div class="separator"></div>
+        <div class="card-heading">
+          <div>
+            <h2>Search Result: {{ submittedPart() }}</h2>
+            <p>{{ jigs().length }} matching jig record{{ jigs().length > 1 ? 's' : '' }} found.</p>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto; margin-top:18px;">
+          <table style="width:100%; border-collapse:collapse; font-size:.92rem;">
+            <thead>
+              <tr style="background:#f1f6fc; text-align:left;">
+                <th style="padding:12px;">Register ID</th>
+                <th style="padding:12px;">Machine</th>
+                <th style="padding:12px;">Bin</th>
+                <th style="padding:12px;">Status</th>
+                <th style="padding:12px;">Who Borrow?</th>
+                <th style="padding:12px;">Date Borrow</th>
+                <th style="padding:12px;">Date Return</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (jig of jigs(); track jig.registerId) {
+                <tr style="border-bottom:1px solid #e4eaf0;">
+                  <td style="padding:12px; font-weight:700;">{{ jig.registerId }}</td>
+                  <td style="padding:12px;">{{ jig.machine || '—' }}</td>
+                  <td style="padding:12px;">{{ jig.binNumber || '—' }}</td>
+                  <td style="padding:12px;">{{ jig.status || '—' }}</td>
+                  <td style="padding:12px;">{{ jig.borrower || '—' }}</td>
+                  <td style="padding:12px;">{{ jig.dateBorrow || '—' }}</td>
+                  <td style="padding:12px;">{{ jig.dateReturn || '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
       <div class="tip-box">
         <div class="tip-icon">💡</div>
-        <div><strong>Tip:</strong> You can also scan a barcode from a jig tag to quickly look up inventory.</div>
+        <div><strong>Tip:</strong> Search by Part Number. All matching Register IDs will be shown.</div>
       </div>
     </section>
   </main>

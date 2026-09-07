@@ -13,22 +13,41 @@
         <div>
           <p class="eyebrow">INVENTORY</p>
           <h1>Add New Jig</h1>
-          <p>Register a new jig or fixture in the management system.</p>
+          <p>Add a new row directly to the Tonasco Jig Google Sheet.</p>
         </div>
       </div>
 
       <form (ngSubmit)="save()">
         <div class="grid">
-          <label>Part Number<input name="partNumber" [(ngModel)]="form.partNumber" required placeholder="e.g. 12345-ABC"></label>
-          <label>Jig Number<input name="jigNumber" [(ngModel)]="form.jigNumber" placeholder="e.g. JIG-001"></label>
-          <label>Jig Name<input name="jigName" [(ngModel)]="form.jigName" placeholder="e.g. Drilling Jig"></label>
-          <label>Rack Location<input name="location" [(ngModel)]="form.location" placeholder="e.g. Rack A-12"></label>
-          <label>Quantity<input name="quantity" [(ngModel)]="form.quantity" min="0" type="number"></label>
-          <label>Status<select name="status" [(ngModel)]="form.status"><option>Available</option><option>In Use</option><option>Maintenance</option><option>Retired</option></select></label>
+          <label>Part Number *<input name="partNumber" [(ngModel)]="form.partNumber" required placeholder="e.g. T0017986"></label>
+          <label>Register ID *<input name="registerId" [(ngModel)]="form.registerId" required placeholder="e.g. T0017986 JIG A"></label>
+          <label>Machine<input name="machine" [(ngModel)]="form.machine" placeholder="e.g. CM"></label>
+          <label>Bin Number<input name="binNumber" [(ngModel)]="form.binNumber" placeholder="e.g. A08"></label>
+          <label>Status
+            <select name="status" [(ngModel)]="form.status">
+              <option>Available</option>
+              <option>Taken</option>
+              <option>Missing</option>
+            </select>
+          </label>
+          <label>Who Borrow?<input name="borrower" [(ngModel)]="form.borrower" placeholder="Optional"></label>
+          <label>Date Borrow<input name="dateBorrow" [(ngModel)]="form.dateBorrow" placeholder="DD/MM/YYYY"></label>
+          <label>Date Return<input name="dateReturn" [(ngModel)]="form.dateReturn" placeholder="DD/MM/YYYY"></label>
         </div>
+
+        @if (error) {
+          <p style="color:#b42318; margin-top:18px;">{{ error }}</p>
+        }
+
+        @if (message) {
+          <p style="color:#14734e; margin-top:18px;">{{ message }}</p>
+        }
+
         <div class="actions">
           <a routerLink="/" class="secondary">Cancel</a>
-          <button type="submit">Save Inventory</button>
+          <button type="submit" [disabled]="saving">
+            {{ saving ? 'Saving...' : 'Save Inventory' }}
+          </button>
         </div>
       </form>
     </section>

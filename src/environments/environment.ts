@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  apiUrl: 'https://YOUR-RAILWAY-BACKEND.up.railway.app/api'
+  production: true,
+  apiUrl: 'https://tonasco-production.up.railway.app/api'
 };

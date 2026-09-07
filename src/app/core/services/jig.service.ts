@@ -4,13 +4,15 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface Jig {
-  id?: number;
+  sheetRow?: number;
   partNumber: string;
-  jigNumber?: string;
-  jigName?: string;
-  location?: string;
-  quantity?: number;
-  status?: string;
+  registerId: string;
+  machine: string;
+  binNumber: string;
+  status: string;
+  borrower: string;
+  dateBorrow: string;
+  dateReturn: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,10 +21,26 @@ export class JigService {
   private readonly baseUrl = `${environment.apiUrl}/jigs`;
 
   findByPartNumber(partNumber: string): Observable<Jig[]> {
-    return this.http.get<Jig[]>(`${this.baseUrl}?partNumber=${encodeURIComponent(partNumber)}`);
+    return this.http.get<Jig[]>(
+      `${this.baseUrl}?partNumber=${encodeURIComponent(partNumber)}`
+    );
   }
 
   addJig(payload: Jig): Observable<Jig> {
     return this.http.post<Jig>(this.baseUrl, payload);
+  }
+
+  borrow(registerId: string, borrower: string): Observable<Jig> {
+    return this.http.patch<Jig>(
+      `${this.baseUrl}/${encodeURIComponent(registerId)}/borrow`,
+      { borrower }
+    );
+  }
+
+  returnJig(registerId: string): Observable<Jig> {
+    return this.http.patch<Jig>(
+      `${this.baseUrl}/${encodeURIComponent(registerId)}/return`,
+      {}
+    );
   }
 }
