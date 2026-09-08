@@ -115,7 +115,31 @@ table { width: 100%; min-width: 900px; border-collapse: collapse; font-size: .91
 th { padding: 13px 12px; background: #f1f6fc; color: #233b58; text-align: left; white-space: nowrap; font-size: .82rem; }
 td { padding: 13px 12px; border-top: 1px solid #e4eaf0; white-space: nowrap; }
 .register-id { font-weight: 800; color: #102e50; }
-.action-cell { text-align: center; }
+/* Action column */
+.action-cell {
+  text-align: center;
+  min-width: 100px;
+}
+
+/* Keep the Action column visible while the table scrolls horizontally. */
+.table-wrap {
+  position: relative;
+  overflow-x: auto;
+}
+
+th:last-child,
+td:last-child {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: #fff;
+  box-shadow: -6px 0 10px rgba(15, 42, 70, .08);
+}
+
+th:last-child {
+  background: #f1f6fc;
+  z-index: 3;
+}
 
 .status-badge {
   display: inline-flex; align-items: center; justify-content: center;
