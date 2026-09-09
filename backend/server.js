@@ -31,13 +31,16 @@ function sheetsClient() {
 function tab() {
   return `'${String(process.env.GOOGLE_SHEET_TAB || '').replace(/'/g, "''")}'`;
 }
+
 const clean = v => String(v ?? '').trim();
 const norm = v => clean(v).toLowerCase();
 
 function todayMY() {
   return new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Asia/Kuala_Lumpur',
-    day: '2-digit', month: '2-digit', year: 'numeric'
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
   }).format(new Date());
 }
 
@@ -102,9 +105,11 @@ app.post('/api/jigs', async (req, res) => {
     if (!jig.partNumber || !jig.registerId) {
       return res.status(400).json({ message: 'Part Number and Register ID are required.' });
     }
+
     if (!['Available', 'Taken', 'Missing'].includes(jig.status)) {
       return res.status(400).json({ message: 'Status must be Available, Taken, or Missing.' });
     }
+
     if (await byRegisterId(jig.registerId)) {
       return res.status(409).json({ message: 'Register ID already exists.' });
     }
@@ -116,8 +121,14 @@ app.post('/api/jigs', async (req, res) => {
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values: [[
-        jig.partNumber, jig.registerId, jig.machine, jig.binNumber,
-        jig.status, jig.borrower, jig.dateBorrow, jig.dateReturn
+        jig.partNumber,
+        jig.registerId,
+        jig.machine,
+        jig.binNumber,
+        jig.status,
+        jig.borrower,
+        jig.dateBorrow,
+        jig.dateReturn
       ]] }
     });
 
@@ -125,6 +136,46 @@ app.post('/api/jigs', async (req, res) => {
   } catch (e) {
     console.error(e);
     res.status(500).json({ message: 'Unable to add jig.' });
+  }
+});
+
+app.patch('/api/jigs/:registerId/complete', async (req, res) => {
+  try {
+    const jig = await byRegisterId(decodeURIComponent(req.params.registerId));
+
+    if (!jig) {
+      return res.status(404).json({ message: 'Register ID not found.' });
+    }
+
+    const machine = clean(req.body.machine);
+    const binNumber = clean(req.body.binNumber);
+    const status = clean(req.body.status) || 'Available';
+
+    if (!machine || !binNumber) {
+      return res.status(400).json({ message: 'Machine and Bin Number are required.' });
+    }
+
+    if (!['Available', 'Taken', 'Missing'].includes(status)) {
+      return res.status(400).json({ message: 'Status must be Available, Taken, or Missing.' });
+    }
+
+    const sheets = sheetsClient();
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: process.env.GOOGLE_SHEET_ID,
+      range: `${tab()}!C${jig.sheetRow}:E${jig.sheetRow}`,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values: [[machine, binNumber, status]] }
+    });
+
+    res.json({
+      ...jig,
+      machine,
+      binNumber,
+      status
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Unable to complete jig record.' });
   }
 });
 
