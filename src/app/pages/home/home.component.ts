@@ -138,7 +138,11 @@ export class HomeComponent {
     const jig = this.selectedJig();
     if (!jig) return;
 
-    if (!this.createMachine.trim() || !this.createBin.trim() || !this.createStatus) {
+    const machine = this.createMachine.trim();
+    const binNumber = this.createBin.trim();
+    const status = this.createStatus;
+
+    if (!machine || !binNumber || !status) {
       this.actionError = 'Please fill in Machine, Bin and Status.';
       return;
     }
@@ -146,24 +150,19 @@ export class HomeComponent {
     this.actionLoading.set(true);
     this.actionError = '';
 
-    this.jigService.addJig({
-      partNumber: jig.partNumber,
-      registerId: jig.registerId,
-      machine: this.createMachine.trim(),
-      binNumber: this.createBin.trim(),
-      status: this.createStatus,
-      borrower: '',
-      dateBorrow: '',
-      dateReturn: ''
+    this.jigService.completeJig(jig.registerId, {
+      machine,
+      binNumber,
+      status
     }).subscribe({
-      next: (created) => {
-        this.replaceJig(created);
-        this.success.set(`${created.registerId} has been created in the inventory.`);
+      next: (updated) => {
+        this.replaceJig(updated);
+        this.success.set(`${updated.registerId} has been completed successfully.`);
         this.actionLoading.set(false);
         this.closeModal();
       },
       error: (err) => {
-        this.actionError = err?.error?.message || 'Unable to create jig record.';
+        this.actionError = err?.error?.message || 'Unable to complete jig record.';
         this.actionLoading.set(false);
       }
     });
