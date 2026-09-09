@@ -23,17 +23,24 @@
 }
 
 .brand-lockup { display: flex; align-items: center; gap: 20px; min-width: 0; }
-.brand-word, .hero-brand { position: relative; color: #07518b; font-weight: 800; letter-spacing: -2px; line-height: 1; }
-.brand-word { font-size: clamp(2rem, 3.2vw, 3.25rem); }
-.brand-mark, .hero-mark {
-  position: absolute;
-  width: 44px;
-  height: 10px;
-  border-radius: 100% 0 100% 0;
-  background: #07518b;
-  transform: rotate(-12deg);
+
+.brand-logo {
+  display: block;
+  width: 185px;
+  max-width: 42vw;
+  height: auto;
+  object-fit: contain;
 }
-.brand-mark { top: -8px; right: 22px; }
+
+.hero-logo {
+  display: block;
+  width: clamp(260px, 38vw, 370px);
+  max-width: 82vw;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
 .brand-divider { width: 1px; height: 36px; background: #e5eaf0; }
 .brand-section { font-size: 1.15rem; font-weight: 700; white-space: nowrap; }
 
@@ -60,8 +67,6 @@
   flex: 1;
 }
 .hero-heading { text-align: center; margin-bottom: 34px; }
-.hero-brand { display: inline-block; font-size: clamp(4rem, 8vw, 7rem); letter-spacing: -5px; }
-.hero-mark { width: 94px; height: 18px; top: -13px; right: 74px; }
 .title-row { display: grid; grid-template-columns: minmax(50px, 120px) auto minmax(50px,120px); align-items: center; justify-content: center; gap: 26px; margin-top: 12px; }
 .title-row span { height: 1px; background: #b8c7d6; }
 .title-row h1 { margin: 0; font-size: clamp(1.35rem, 2vw, 1.8rem); }
@@ -217,13 +222,12 @@ footer { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px; col
 @media (max-width: 720px) {
   .topbar { min-height: 94px; padding: 16px 20px; align-items: center; }
   .brand-lockup { display: block; }
-  .brand-word { font-size: 2.25rem; }
+  .brand-logo { width: 155px; max-width: 48vw; }
+  .hero-logo { width: min(300px, 72vw); }
   .brand-divider { display: none; }
   .brand-section { display: block; font-weight: 500; color: #3e526d; margin-top: 8px; }
   .top-action { min-height: 48px; padding: 0 16px; font-size: .92rem; }
   .hero { padding: 48px 16px 20px; }
-  .hero-brand { font-size: clamp(3.35rem, 17vw, 5rem); }
-  .hero-mark { width: 70px; right: 50px; }
   .title-row { gap: 14px; grid-template-columns: 48px auto 48px; }
   .search-card { padding: 28px 22px; border-radius: 16px; }
   .card-heading { align-items: flex-start; gap: 16px; }
@@ -238,9 +242,9 @@ footer { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px; col
 
 @media (max-width: 430px) {
   .topbar { gap: 10px; padding-inline: 14px; }
-  .brand-word { font-size: 1.85rem; }
+  .brand-logo { width: 135px; max-width: 44vw; }
+  .hero-logo { width: min(265px, 74vw); }
   .brand-section { font-size: .88rem; }
-  .brand-mark { width: 33px; right: 14px; }
   .top-action { padding: 0 12px; }
   .top-action .plus { display: none; }
   .hero { padding-top: 38px; }
