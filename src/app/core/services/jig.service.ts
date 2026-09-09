@@ -15,6 +15,12 @@ export interface Jig {
   dateReturn: string;
 }
 
+export interface CompleteJigPayload {
+  machine: string;
+  binNumber: string;
+  status: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class JigService {
   private readonly http = inject(HttpClient);
@@ -28,6 +34,13 @@ export class JigService {
 
   addJig(payload: Jig): Observable<Jig> {
     return this.http.post<Jig>(this.baseUrl, payload);
+  }
+
+  completeJig(registerId: string, payload: CompleteJigPayload): Observable<Jig> {
+    return this.http.patch<Jig>(
+      `${this.baseUrl}/${encodeURIComponent(registerId)}/complete`,
+      payload
+    );
   }
 
   borrow(registerId: string, borrower: string): Observable<Jig> {
